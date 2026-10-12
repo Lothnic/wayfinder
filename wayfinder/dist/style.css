@@ -55,6 +55,8 @@ button .icon { pointer-events: none; }
 .agent-button { display: flex; align-items: center; gap: 6px; padding: 6px 9px; border: 1px solid var(--line); border-radius: 2px; font-size: 12px; background: #fff; }
 .agent-button .icon { width: 14px; height: 14px; }
 .backup-menu > summary::-webkit-details-marker { display: none; }
+.agent-config { white-space: pre-wrap; font-size: 11px; background: #f5fbfe; border: 1px solid var(--line); color: #1a2a4a; padding: 10px; max-height: 130px; overflow: auto; border-radius: 2px; }
+[data-theme="dark"] .agent-config { background: #0b1421; border-color: #536b86; color: #d7e6f5; }
 .backup-menu > summary .icon { width: 14px; height: 14px; }
 .backup-menu > summary .icon:last-child { width: 12px; height: 12px; color: var(--muted); }
 .backup-options { position: absolute; z-index: 90; right: 0; top: calc(100% + 9px); min-width: 195px; display: flex; flex-direction: column; gap: 2px; background: #fff; border: 1px solid var(--ink); box-shadow: 3px 3px 0 var(--ink); padding: 5px; }
