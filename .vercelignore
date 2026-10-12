@@ -1,0 +1,17 @@
+.git
+.agents
+.codex
+.aws
+.vercel
+node_modules
+wayfinder/.git
+wayfinder/.openai
+wayfinder/node_modules
+wayfinder/artifacts
+SKILL.md
+DESIGN.md
+*.zip
+*.tar.gz
+.env*
+
+brag-output*/

@@ -1,0 +1,27 @@
+{
+  "name": "wayfinder-mcp",
+  "version": "0.1.0",
+  "description": "Local MCP server + loopback bridge so AI agents can read and edit Wayfinder life-map DAGs",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "wayfinder-mcp": "./server.js",
+    "wayfinder-bridge": "./bridge.js"
+  },
+  "files": [
+    "server.js",
+    "bridge.js",
+    "graph.js",
+    "paths.js",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node server.js",
+    "bridge": "node bridge.js",
+    "check": "node --check server.js && node --check bridge.js && node --check graph.js && node --check paths.js && cmp graph.js ../wayfinder/dist/graph.js",
+    "pack": "npm pack --dry-run"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.12.0"
+  }
+}

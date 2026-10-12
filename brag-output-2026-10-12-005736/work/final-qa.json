@@ -1,0 +1,14 @@
+{
+  "duration_seconds": 22,
+  "dimensions": "1920x1080",
+  "fps": 30,
+  "video_frames": 660,
+  "decode_errors": 0,
+  "poster_frame_0_mean_pixel_error": 1.3911,
+  "encoded_audio_integrated_lufs": "-16.02",
+  "encoded_audio_true_peak_dbtp": "-2.32",
+  "scenes_and_mid_transitions_visually_reviewed": true,
+  "old_video_preserved": true,
+  "domain": "wayfinder.lothnic.dev",
+  "domain_end_card_and_transition_visually_reviewed": true
+}

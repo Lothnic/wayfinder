@@ -1,0 +1,28 @@
+[aist#0:0/pcm_s16le @ 0x5a06e0df0580] Guessed Channel Layout: stereo
+Input #0, wav, from '/home/lothnic/Desktop/Projects/dags/brag-output-2026-10-12-005736/work/music-raw.wav':
+  Duration: 00:00:22.00, bitrate: 1536 kb/s
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 48000 Hz, stereo, s16, 1536 kb/s
+Stream mapping:
+  Stream #0:0 -> #0:0 (pcm_s16le (native) -> pcm_s16le (native))
+Press [q] to stop, [?] for help
+Output #0, wav, to '/home/lothnic/Desktop/Projects/dags/brag-output-2026-10-12-005736/work/brag-audio.wav':
+  Metadata:
+    ISFT            : Lavf62.3.100
+  Stream #0:0: Audio: pcm_s16le ([1][0][0][0] / 0x0001), 48000 Hz, stereo, s16, 1536 kb/s
+    Metadata:
+      encoder         : Lavc62.11.100 pcm_s16le
+[Parsed_loudnorm_0 @ 0x709ad4004600] 
+Input Integrated:    -26.8 LUFS
+Input True Peak:     -13.3 dBTP
+Input LRA:             1.1 LU
+Input Threshold:     -36.8 LUFS
+
+Output Integrated:   -15.9 LUFS
+Output True Peak:     -2.3 dBTP
+Output LRA:            1.2 LU
+Output Threshold:    -25.9 LUFS
+
+Normalization Type:   Linear
+Target Offset:        -0.1 LU
+[out#0/wav @ 0x5a06e0df0800] video:0KiB audio:4125KiB subtitle:0KiB other streams:0KiB global headers:0KiB muxing overhead: 0.001847%
+size=    4125KiB time=00:00:22.00 bitrate=1536.0kbits/s speed= 413x elapsed=0:00:00.05    

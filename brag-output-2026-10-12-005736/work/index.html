@@ -1,0 +1,32 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8"><title>Wayfinder — from a future to a first step</title>
+<link rel="stylesheet" href="fonts/fonts.css"><style>
+*{box-sizing:border-box}html,body{width:1920px;height:1080px;margin:0;overflow:hidden}
+body{font-family:Nunito,sans-serif;color:#1a2a4a;background:#f5fafd;background-image:linear-gradient(#e5f1f8 1px,transparent 1px),linear-gradient(90deg,#e5f1f8 1px,transparent 1px);background-size:32px 32px}
+.brand{position:absolute;left:88px;top:64px;display:flex;align-items:center;gap:14px;font:52px/1 VT323,monospace}
+.brand svg{width:40px;height:40px;padding:6px;background:#7dd3f7;border:1.5px solid #1a2a4a;box-shadow:2px 2px 0 #1a2a4a}
+.brand b{font-weight:400;color:#3985ae}.brand-note{position:absolute;right:90px;top:76px;font-size:14px;font-weight:700;letter-spacing:2px;color:#67758b}
+#copy{position:absolute;left:88px;top:280px;width:505px}
+.kicker{font-size:15px;font-weight:800;letter-spacing:2px;color:#67758b;margin-bottom:24px}
+h1{font:108px/.96 VT323,monospace;font-weight:400;letter-spacing:-1px;margin:0 0 28px}
+h1 em{font-style:normal;color:#3985ae}.sub{font-size:26px;line-height:1.65;font-weight:600;color:#67758b;max-width:470px}
+#product{position:absolute;left:638px;top:170px;width:1200px;height:800px;border:1.5px solid #aebfd0;background:white;box-shadow:7px 7px 0 #c9deeb;transform-origin:100% 50%;overflow:hidden}
+iframe{width:1200px;height:800px;border:0;display:block;pointer-events:none}
+#chapters{position:absolute;left:90px;top:835px;display:flex;gap:18px;align-items:center;font-size:19px;font-weight:700;color:#91a0b2}
+#chapters i{font-style:normal;color:#b7c8d7}#chapters .active{color:#1a2a4a;border-bottom:3px solid #7dd3f7;padding-bottom:8px}#chapters span{padding-bottom:11px}
+#footer{position:absolute;left:90px;right:88px;bottom:28px;display:flex;justify-content:space-between;font-size:15px;color:#67758b;letter-spacing:.3px}
+#track{position:absolute;bottom:12px;left:88px;width:1744px;height:3px;background:#d7e2eb}#progress{height:3px;background:#3985ae;transform-origin:left}
+#outro{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;text-align:center;background:#e9f7fe;background-image:linear-gradient(#d5ebf7 1px,transparent 1px),linear-gradient(90deg,#d5ebf7 1px,transparent 1px);background-size:32px 32px}
+.outro-mark{display:flex;align-items:center;gap:20px;font:98px/1 VT323,monospace;margin-bottom:35px}.outro-mark svg{width:72px;height:72px;padding:10px;background:#7dd3f7;border:2px solid #1a2a4a;box-shadow:3px 3px 0 #1a2a4a}.outro-mark b{font-weight:400;color:#3985ae}
+.outro-title{font:112px/1.1 VT323,monospace;margin-bottom:37px}.url{font:700 31px/1.2 Nunito,sans-serif;border:1.5px solid #1a2a4a;background:#ffe040;box-shadow:4px 4px 0 #1a2a4a;padding:18px 30px;margin-bottom:30px}.privacy{font-size:23px;color:#67758b}
+#cursor{position:absolute;z-index:20;pointer-events:none;display:none;width:30px;height:34px;filter:none}#ring{position:absolute;z-index:19;width:54px;height:54px;border:3px solid #3985ae;border-radius:50%;display:none;transform:translate(-50%,-50%);pointer-events:none}
+</style></head><body>
+<div class="brand" id="brand"></div><div class="brand-note">YOUR LIFE, MAPPED</div>
+<section id="copy"><div class="kicker" id="kicker"></div><h1 id="headline"></h1><p class="sub" id="sub"></p></section>
+<div id="product"><iframe id="demo" src="app/index.html"></iframe></div>
+<div id="chapters"><span id="ch0">Vision</span><i>→</i><span id="ch1">Map</span><i>→</i><span id="ch2">Today</span></div>
+<div id="footer"><span>wayfinder.lothnic.dev</span><span>No signup. Plans stay in your browser.</span></div>
+<div id="track"><div id="progress"></div></div>
+<div id="outro"><div class="outro-mark" id="outro-brand"></div><div class="outro-title">Start where you are.</div><div class="url">wayfinder.lothnic.dev</div><div class="privacy">No signup. Browser saved.</div></div>
+<svg id="cursor" viewBox="0 0 30 34"><path d="M3 2v25l7-7 6 11 5-3-6-11h10Z" fill="white" stroke="#1a2a4a" stroke-width="2"/></svg><div id="ring"></div>
+<script src="render.js"></script></body></html>

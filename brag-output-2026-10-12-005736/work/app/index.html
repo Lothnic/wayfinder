@@ -1,0 +1,33 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#7dd3f7">
+  <meta name="description" content="Work backward from a future you’re proud of. Map your goals, untangle the steps, and find a place to begin.">
+  <title>Wayfinder — your life, mapped</title>
+  <link rel="icon" href="icon.svg" type="image/svg+xml">
+  <script src="theme.js"></script>
+  <link rel="stylesheet" href="style.css">
+<style>
+/* Presentation crops only. All product markup and behavior come from the copied app. */
+body {background:#fff;} .main-shell {min-height:0;border:0;}
+.page-footer,.skip-link,.next-section,.date-pill,.vision-banner {display:none;}
+.app-header {padding:16px 26px;} main {padding:22px 26px;}
+.graph-viewport {height:450px;} .journal-textarea {min-height:130px;height:130px;resize:none;}
+.writing-panel {padding:17px;} .writing-prompt {margin-top:5px;}
+.horizon-section {margin-top:22px;}.horizon-card {padding:14px;}
+.horizon-label {margin:-14px -14px 0;}.horizon-card h3 {margin-top:10px;}
+.week-column {min-height:330px;} .weekly-review {display:none;}
+*,*::before,*::after {animation:none!important;transition:none!important;}
+</style></head>
+<body>
+  <noscript><p>Wayfinder needs JavaScript to edit and save your map. Please enable JavaScript in your browser.</p></noscript>
+  <div id="app"></div>
+  <div id="toast" role="status" aria-live="polite"></div>
+  <dialog id="editor" aria-labelledby="editor-title"></dialog>
+  <dialog id="confirm-dialog" aria-labelledby="confirm-title"></dialog>
+  <input id="import-file" type="file" accept="application/json,.json" hidden>
+  <script type="module" src="app.js"></script>
+</body>
+</html>

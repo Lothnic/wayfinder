@@ -1,0 +1,175 @@
+{
+  "version": 1,
+  "example": false,
+  "vision": "Three years from now I am an AI engineer: shipping models and LLM-powered features that users rely on, solid on fundamentals, learning in public.",
+  "notes": "",
+  "nodes": [
+    {
+      "id": "n-mv5nsgtc-fsd7f",
+      "title": "3rd-year baseline: CS student",
+      "type": "now",
+      "x": 55,
+      "y": 55,
+      "notes": "Python basics done, data structures course done, linear algebra in progress.",
+      "done": true,
+      "when": "none",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgtl-shq2v",
+      "title": "Sharpen Python + math",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "NumPy, pandas; linear algebra + probability essentials.",
+      "done": false,
+      "when": "today",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgtt-yy20t",
+      "title": "Finish an ML fundamentals course",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "Regression to trees to evaluation. One course, end to end.",
+      "done": false,
+      "when": "week",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgu0-s07qg",
+      "title": "Learn deep learning",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "PyTorch, CNNs, transformers at user level.",
+      "done": false,
+      "when": "month",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgu6-f0q8l",
+      "title": "Ship 2 portfolio projects",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "One ML project, one LLM-app project. Deployed, with READMEs.",
+      "done": false,
+      "when": "month",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsguc-5n54n",
+      "title": "Enter one Kaggle competition",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "Practice iteration speed and strong baselines.",
+      "done": false,
+      "when": "none",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgui-9pv64",
+      "title": "DSA + interview prep",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "LeetCode routine plus ML system-design basics.",
+      "done": false,
+      "when": "week",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsguq-krdlk",
+      "title": "Apply to AI internships",
+      "type": "step",
+      "x": 55,
+      "y": 55,
+      "notes": "20+ tailored applications, referrals, portfolio link.",
+      "done": false,
+      "when": "none",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsguw-i1veg",
+      "title": "Pick a lane: LLM apps vs ML research",
+      "type": "knot",
+      "x": 55,
+      "y": 55,
+      "notes": "Unclear which fits. Build one project in each, then decide.",
+      "done": false,
+      "when": "none",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgv2-5wsz0",
+      "title": "Land an AI internship",
+      "type": "goal",
+      "x": 55,
+      "y": 55,
+      "notes": "One-year milestone on the way to full-time.",
+      "done": false,
+      "when": "none",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv5nsgv9-3jv1s",
+      "title": "Working AI engineer",
+      "type": "goal",
+      "x": 55,
+      "y": 55,
+      "notes": "Full-time AI engineer role.",
+      "done": false,
+      "when": "none",
+      "horizon": 3
+    }
+  ],
+  "edges": [
+    {
+      "source": "n-mv5nsgtc-fsd7f",
+      "target": "n-mv5nsgtl-shq2v"
+    },
+    {
+      "source": "n-mv5nsgtl-shq2v",
+      "target": "n-mv5nsgtt-yy20t"
+    },
+    {
+      "source": "n-mv5nsgtt-yy20t",
+      "target": "n-mv5nsgu0-s07qg"
+    },
+    {
+      "source": "n-mv5nsgu0-s07qg",
+      "target": "n-mv5nsgu6-f0q8l"
+    },
+    {
+      "source": "n-mv5nsgtt-yy20t",
+      "target": "n-mv5nsguc-5n54n"
+    },
+    {
+      "source": "n-mv5nsguc-5n54n",
+      "target": "n-mv5nsgu6-f0q8l"
+    },
+    {
+      "source": "n-mv5nsgtl-shq2v",
+      "target": "n-mv5nsgui-9pv64"
+    },
+    {
+      "source": "n-mv5nsgu6-f0q8l",
+      "target": "n-mv5nsguq-krdlk"
+    },
+    {
+      "source": "n-mv5nsgui-9pv64",
+      "target": "n-mv5nsguq-krdlk"
+    },
+    {
+      "source": "n-mv5nsguq-krdlk",
+      "target": "n-mv5nsgv2-5wsz0"
+    },
+    {
+      "source": "n-mv5nsgv2-5wsz0",
+      "target": "n-mv5nsgv9-3jv1s"
+    }
+  ]
+}
