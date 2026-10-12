@@ -19,7 +19,7 @@ import {
   CallToolRequestSchema,
   ListToolsRequestSchema,
 } from '@modelcontextprotocol/sdk/types.js';
-import { validatePlan, canConnect } from './graph.js';
+import { validatePlan, canConnect, layoutNodes } from './graph.js';
 import { resolvePlanPath } from './paths.js';
 import { loadPlan, startBridge } from './bridge.js';
 
@@ -141,6 +141,11 @@ const TOOLS = [
       properties: { plan: { type: 'object', description: 'Full version-1 plan JSON' } },
     },
   },
+  {
+    name: 'layout',
+    description: 'Auto-arrange every node by graph depth (same as the site Arrange button). Call after building or importing a fresh map so nothing overlaps.',
+    inputSchema: { type: 'object', properties: {} },
+  },
 ];
 
 const server = new Server({ name: 'wayfinder', version: '1.0.0' }, { capabilities: { tools: {} } });
@@ -180,6 +185,17 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         const ps = nodes.filter((n) => parents.includes(n.id));
         node.x = Math.max(...ps.map((p) => p.x)) + 270;
         node.y = ps.reduce((t, p) => t + p.y, 0) / ps.length;
+      } else {
+        // First free grid slot, so parentless nodes never stack on each other.
+        let placed = false;
+        for (let row = 0; row < 50 && !placed; row++) {
+          for (let col = 0; col < 50 && !placed; col++) {
+            const x = 55 + col * 270, y = 55 + row * 184;
+            if (!nodes.some((n) => Math.abs(n.x - x) < 235 && Math.abs(n.y - y) < 165)) {
+              node.x = x; node.y = y; placed = true;
+            }
+          }
+        }
       }
       return text({ ok: true, node: savePlan({ ...plan, nodes, edges }).nodes.find((n) => n.id === id) });
     }
@@ -250,6 +266,12 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
 
     if (name === 'replace_plan') {
       return text({ ok: true, plan: savePlan(args.plan) });
+    }
+
+    if (name === 'layout') {
+      layoutNodes(plan.nodes, plan.edges);
+      savePlan(plan);
+      return text({ ok: true, nodes: plan.nodes.length });
     }
 
     throw new Error(`unknown tool ${name}`);
