@@ -32,6 +32,33 @@ let view = 'map', filter = 'all', connecting = null, history = [];
 let mapExpanded = false;
 let camera = {x:0,y:0,z:1};
 let pointer = null, suppressClick = false, fitQueued = true, toastTimer;
+let lastSyncedHash = null, dismissedBridgeHash = null, bridgeSeen = null;
+function planFingerprint(p) {
+  const canon = JSON.stringify({ vision: p.vision, notes: p.notes,
+    nodes: [...p.nodes].sort((a,b)=>a.id<b.id?-1:1).map(n=>[n.id,n.title,n.type,n.notes,n.done,n.when,n.horizon]),
+    edges: [...p.edges].map(e=>[e.source,e.target]).sort() });
+  let h = 5381;
+  for (let i=0;i<canon.length;i++) h = ((h<<5)+h+canon.charCodeAt(i))>>>0;
+  return h.toString(36);
+}
+function agentNotice() {
+  if (!bridgeSeen || !lastSyncedHash) return '';
+  if (bridgeSeen.hash===lastSyncedHash || bridgeSeen.hash===dismissedBridgeHash) return '';
+  if (bridgeSeen.hash===planFingerprint(plan)) { lastSyncedHash=bridgeSeen.hash; return ''; }
+  return `<div class="storage-message"><span>${icon('sprout')} Your agent updated the map — ${bridgeSeen.nodes} steps, ${bridgeSeen.edges} connections. Load it?</span><div><button class="text-button" data-action="banner-load">Load agent map</button><button class="text-button" data-action="banner-dismiss">Dismiss</button></div></div>`;
+}
+function updateAgentNotice() { const el=$('#agent-notice'); if(el) el.innerHTML=agentNotice(); }
+async function pollAgent() {
+  if (document.hidden) return;
+  try {
+    const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),2500);
+    const res=await fetch(`${BRIDGE_URL}/plan`,{signal:controller.signal}); clearTimeout(timer);
+    if(!res.ok) throw new Error();
+    const incoming=await res.json();
+    bridgeSeen={hash:planFingerprint(incoming),nodes:incoming.nodes.length,edges:incoming.edges.length};
+  } catch { bridgeSeen=null; }
+  updateAgentNotice();
+}
 const ready = () => plan.nodes.filter(n=>isReady(n,plan.nodes,plan.edges));
 const stepNodes = () => plan.nodes.filter(n=>n.type!=='now');
 const doneCount = () => stepNodes().filter(n=>n.done).length;
@@ -81,10 +108,12 @@ function render() {
         <div class="header-actions"><span id="save-state" role="status"></span><button class="icon-button theme-toggle" data-action="theme" aria-label="Switch to dark mode" aria-pressed="false"></button><button class="agent-button" data-action="agents" aria-label="Connect an AI agent">${icon('link')}<span>Agent</span></button><details class="backup-menu"><summary aria-label="Backup and map options">${icon('download')}<span>Backup</span>${icon('down')}</summary><div class="backup-options"><button data-action="export">${icon('download')} Export backup</button><button data-action="import">${icon('upload')} Import backup</button><button data-action="agents">${icon('link')} Connect an agent</button><button data-action="help">${icon('help')} How it works</button><button data-action="new-map">${icon('plus')} Start a fresh map</button></div></details></div>
       </header>
       <div id="storage-notice" role="status">${storageNotice()}</div>
+      <div id="agent-notice" role="status"></div>
       <main id="main-content" tabindex="-1">${view==='map'?mapView():view==='vision'?visionView():view==='week'?weekView():notesView()}</main>
       <footer class="page-footer"><span>${icon('lock')} No signup. Plans stay in your browser. Export a backup to keep them.</span><a href="https://www.yacinemahdid.com/p/how-to-stop-feeling-lost-in-tech" target="_blank" rel="noopener noreferrer">The idea behind Wayfinder ${icon('arrow')}</a></footer>
     </div>`;
   updateSaveState();
+  updateAgentNotice();
   updateThemeToggle();
   const journal=$('#vision-text')||$('#notes-text');if(journal)journal.maxLength=100000;
   if(view==='map') {
@@ -305,6 +334,7 @@ document.addEventListener('click',async e=>{
       const res=await fetch(`${BRIDGE_URL}/plan`,{method:'PUT',headers:{'Content-Type':'application/json'},body:JSON.stringify(plan)});
       const body=await res.json();
       if(!res.ok||!body.ok)throw new Error(body.error||('bridge replied '+res.status));
+      lastSyncedHash=planFingerprint(plan); dismissedBridgeHash=null;
       toast(`Pushed ${plan.nodes.length} steps to the agent file.`);
       $('#confirm-dialog').close(); agentsDialog();
     }catch(err){toast('Push failed: '+err.message+'. Is `npm run bridge` running?');}
@@ -314,8 +344,21 @@ document.addEventListener('click',async e=>{
       const res=await fetch(`${BRIDGE_URL}/plan`);
       if(!res.ok)throw new Error('bridge replied '+res.status);
       const incoming=validatePlan(await res.json());
-      confirmAction('Pull the agent version into this browser?','This replaces your current map, vision, and notes. You can undo it during this session.','Pull agent map',()=>{snapshot();plan=incoming;recovery=null;externalPlan=null;connecting=null;view='map';filter='all';fitQueued=true;commit();toast('Agent map loaded. Pick up where it left off.');});
+      confirmAction('Pull the agent version into this browser?','This replaces your current map, vision, and notes. You can undo it during this session.','Pull agent map',()=>{snapshot();plan=incoming;recovery=null;externalPlan=null;connecting=null;view='map';filter='all';fitQueued=true;lastSyncedHash=planFingerprint(plan);dismissedBridgeHash=null;commit();toast('Agent map loaded. Pick up where you left off.');});
     }catch(err){toast('Pull failed: '+err.message+'. Is `npm run bridge` running?');}
+  }
+  if(action==='banner-dismiss'){ dismissedBridgeHash=bridgeSeen?bridgeSeen.hash:null; updateAgentNotice(); }
+  if(action==='banner-load'){
+    if($('#editor')&&$('#editor').open){ toast('Close the step editor first, then load.'); return; }
+    try{
+      const res=await fetch(`${BRIDGE_URL}/plan`);
+      if(!res.ok)throw new Error('bridge replied '+res.status);
+      const incoming=validatePlan(await res.json());
+      snapshot();plan=incoming;recovery=null;externalPlan=null;connecting=null;view='map';filter='all';fitQueued=true;
+      lastSyncedHash=planFingerprint(plan);dismissedBridgeHash=null;
+      bridgeSeen={hash:lastSyncedHash,nodes:plan.nodes.length,edges:plan.edges.length};
+      commit();toast('Agent map loaded. Undo is available if you need it.');
+    }catch(err){toast('Load failed: '+err.message);}
   }
   if(action==='recovery'&&recovery!==null)downloadBackup(recovery,'wayfinder-original');
   if(action==='load-latest'&&externalPlan!==null){snapshot();plan=externalPlan;externalPlan=null;recovery=null;storageFailed=false;connecting=null;fitQueued=true;document.querySelectorAll('dialog[open]').forEach(d=>d.close());render();toast('Loaded the map from your other tab.');}
@@ -376,4 +419,6 @@ document.addEventListener('wheel',e=>{if(e.target.closest('#viewport')&&(e.ctrlK
 let resizeTimer;window.addEventListener('resize',()=>{clearTimeout(resizeTimer);resizeTimer=setTimeout(fitGraph,100);});
 for(const d of document.querySelectorAll('dialog'))d.addEventListener('click',e=>{if(e.target===d){const r=d.getBoundingClientRect();if(e.clientX<r.left||e.clientX>r.right||e.clientY<r.top||e.clientY>r.bottom)d.close();}});
 render();
+pollAgent();
+setInterval(pollAgent, 10000);
 if(storageFailed)toast('Browser saving is unavailable. Export a backup before closing this tab.');
