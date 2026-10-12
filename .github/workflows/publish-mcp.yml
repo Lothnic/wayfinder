@@ -1,8 +1,13 @@
 # Publishes wayfinder-mcp to npm with zero secrets.
 # Auth is OIDC (npm Trusted Publishing): no tokens, no 2FA prompts.
-# One-time setup (browser, no security key): npmjs.com → wayfinder-mcp →
-# Settings → Trusted Publisher → add GitHub Actions Lothnic/wayfinder,
-# workflow publish-mcp.yml. Afterwards: git tag mcp-vX.Y.Z && git push --tags.
+# One-time setup (browser, no security key — but do it promptly: the config
+# expires if the first publish doesn't happen within 2 days):
+#   npmjs.com → wayfinder-mcp → Settings → Trusted Publisher →
+#   GitHub Actions, user Lothnic, repo wayfinder,
+#   workflow file publish-mcp.yml, and tick "Allow npm publish"
+#   (new configs default to stage-only, which this workflow doesn't use).
+# Afterwards: git tag mcp-vX.Y.Z && git push --tags (tag must equal the
+# version in mcp/package.json).
 name: Publish wayfinder-mcp
 
 on:
@@ -29,4 +34,4 @@ jobs:
       - run: npm run check
       - name: Tag must match package version
         run: test "mcp-v$(node -p "require('./package.json').version")" = "$GITHUB_REF_NAME"
-      - run: npm publish --provenance --access public
+      - run: npm publish --access public

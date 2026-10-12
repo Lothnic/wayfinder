@@ -3,6 +3,11 @@
   "version": "0.1.0",
   "description": "Local MCP server + loopback bridge so AI agents can read and edit Wayfinder life-map DAGs",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lothnic/wayfinder.git",
+    "directory": "mcp"
+  },
   "type": "module",
   "bin": {
     "wayfinder-mcp": "./server.js",
