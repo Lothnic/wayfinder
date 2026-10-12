@@ -40,17 +40,16 @@ the plan lives in `~/.wayfinder/wayfinder-plan.json`, the bridge binds
   (`WAYFINDER_NO_BRIDGE=1` disables it). It answers Chrome's private-network
   preflight so the **deployed site** can reach each visitor's own bridge.
 
-## For the site owner: publish once
+## For the site owner: releasing a new version
 
-`wayfinder-mcp` is free on npm at the time of writing. One-time, from `mcp/`:
+Releases are manual (two commands, ~2 minutes). From `mcp/`:
 
-```sh
-npm login
-npm publish --access public
-```
+1. Bump `version` in `mcp/package.json`.
+2. Create a short-lived granular token: npmjs.com → Access Tokens → Generate New Token → Granular, scoped to `wayfinder-mcp`, Read + Write.
+3. `npm config set //registry.npmjs.org/:_authToken 'paste-token-here' && npm publish --access public`
+4. Revoke the token on the website and clear it locally: `npm config delete //registry.npmjs.org/:_authToken`
 
-Then redeploy the site so the dialog's `npx -y wayfinder-mcp` snippet resolves.
-Bump `version` in `mcp/package.json` for later releases (`0.1.0` now).
+(Browser `npm login` tokens cannot publish — always use a granular token.)
 
 ## For developers (repo clone)
 
