@@ -10,8 +10,8 @@
   },
   "type": "module",
   "bin": {
-    "wayfinder-mcp": "./server.js",
-    "wayfinder-bridge": "./bridge.js"
+    "wayfinder-mcp": "server.js",
+    "wayfinder-bridge": "bridge.js"
   },
   "files": [
     "server.js",
