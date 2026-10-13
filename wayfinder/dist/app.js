@@ -54,8 +54,19 @@ async function pollAgent() {
     const controller=new AbortController(); const timer=setTimeout(()=>controller.abort(),2500);
     const res=await fetch(`${BRIDGE_URL}/plan`,{signal:controller.signal}); clearTimeout(timer);
     if(!res.ok) throw new Error();
-    const incoming=await res.json();
+    const incoming=validatePlan(await res.json());
     bridgeSeen={hash:planFingerprint(incoming),nodes:incoming.nodes.length,edges:incoming.edges.length};
+    // Truly live: if this browser hasn't diverged since the last sync and
+    // nothing is being edited, apply the agent's version outright (undoable).
+    // Any local edit, open dialog, drag, or typing keeps the banner instead.
+    const ae=document.activeElement;
+    const typing=ae&&(ae.tagName==='TEXTAREA'||(ae.tagName==='INPUT'&&ae.type!=='checkbox'));
+    if(lastSyncedHash&&bridgeSeen.hash!==lastSyncedHash&&planFingerprint(plan)===lastSyncedHash&&!$('dialog[open]')&&!pointer&&!typing){
+      snapshot();plan=incoming;recovery=null;externalPlan=null;connecting=null;view='map';fitQueued=true;
+      lastSyncedHash=bridgeSeen.hash;dismissedBridgeHash=null;
+      commit();toast('Your agent updated the map — applied live. Undo is available.');
+      return;
+    }
   } catch { bridgeSeen=null; }
   updateAgentNotice();
 }
@@ -258,7 +269,7 @@ async function agentsDialog() {
     <p class="guide-intro" id="bridge-state">Checking for your agent's bridge…</p>
     <ol class="guide method-guide">
       <li><strong>Connect your agent — one paste.</strong><span>No clone, no terminal, no account. Paste one snippet into your agent's config and restart the agent. It downloads the connector and starts its own bridge automatically.</span><p class="guide-control"><b>OpenCode</b> (<code>opencode.json</code>): <button class="text-button" data-action="agents-copy-opencode">${icon('notes')} Copy</button></p><pre class="agent-config">${escape(agentConfigSnippet('opencode'))}</pre><p class="guide-control"><b>Claude Code</b> (<code>.mcp.json</code>) <b>· Cursor · Claude Desktop</b> (<code>claude_desktop_config.json</code>): <button class="text-button" data-action="agents-copy-other">${icon('notes')} Copy</button></p><pre class="agent-config">${escape(agentConfigSnippet('other'))}</pre></li>
-      <li><strong>Sync the map.</strong><span>Push sends this browser map to your agent. Then describe what you want in plain words — your agent edits its copy. Pull loads the result back here (undoable with Ctrl/Command + Z).</span><div class="guide-actions"><button class="button primary" data-action="bridge-push">${icon('upload')} Push to agent</button><button class="button secondary" data-action="bridge-pull">${icon('download')} Pull from agent</button></div></li>
+      <li><strong>Sync the map.</strong><span>Push sends this browser map to your agent. Then just describe what you want — edits appear live on their own. If you've changed things here meanwhile, a banner offers to load instead (nothing is ever overwritten silently).</span><div class="guide-actions"><button class="button primary" data-action="bridge-push">${icon('upload')} Push to agent</button><button class="button secondary" data-action="bridge-pull">${icon('download')} Pull from agent</button></div></li>
     </ol>
     <p class="guide-source">No account, no shared server, no data leaves your machine. The connector runs beside your agent and keeps your plan in a file on your computer; this page only talks to the address beside it (<code>127.0.0.1</code>). Prefer manual? Backup → Export/Import moves the same JSON.</p>`;
   const renderState = async () => {
@@ -266,7 +277,7 @@ async function agentsDialog() {
     if (!state || !d.open) return;
     const s = await bridgeStatus();
     state.innerHTML = s.online
-      ? `${icon('check')} Agent connected — its copy holds <strong>${s.nodes} steps, ${s.edges} connections</strong>. This browser holds <strong>${plan.nodes.length} steps, ${plan.edges.length} connections</strong>. This refreshes on its own; describe changes to your agent, then Pull.`
+      ? `${icon('check')} Agent connected — its copy holds <strong>${s.nodes} steps, ${s.edges} connections</strong>. This browser holds <strong>${plan.nodes.length} steps, ${plan.edges} connections</strong>. This refreshes on its own; agent edits apply live while this browser is untouched.`
       : `${icon('help')} Waiting for your agent… paste a snippet above, restart the agent, and this flips green by itself. Needs Node.js on your machine (the agent host usually brings it). If your browser asks about local-network access, allow it.`;
   };
   d.showModal();

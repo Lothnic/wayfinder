@@ -29,7 +29,10 @@ the plan lives in `~/.wayfinder/wayfinder-plan.json`, the bridge binds
   JSON-RPC over stdin/stdout. No network, no auth dance.
 - **Tools** are named functions with a JSON schema: `get_summary`,
   `get_plan`, `add_node`, `update_node`, `remove_node`, `connect`,
-  `disconnect`, `complete_node`, `set_text`, `replace_plan`.
+  `disconnect`, `complete_node`, `set_text`, `replace_plan`, `layout`.
+  New nodes are auto-placed (after their prerequisites, nudged until free,
+  so siblings never stack), and `layout` arranges the whole map by depth —
+  agents should call it after building a fresh map.
 - **Validation is shared** with the site: `graph.js` is a byte-identical copy
   of `wayfinder/dist/graph.js` (enforced by `npm run check`), so agent edits
   obey the same rules as the UI (version 1, ≤2000 nodes, ≤10000 edges,

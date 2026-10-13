@@ -187,16 +187,10 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         node.y = ps.reduce((t, p) => t + p.y, 0) / ps.length;
       } else {
         // First free grid slot, so parentless nodes never stack on each other.
-        let placed = false;
-        for (let row = 0; row < 50 && !placed; row++) {
-          for (let col = 0; col < 50 && !placed; col++) {
-            const x = 55 + col * 270, y = 55 + row * 184;
-            if (!nodes.some((n) => Math.abs(n.x - x) < 235 && Math.abs(n.y - y) < 165)) {
-              node.x = x; node.y = y; placed = true;
-            }
-          }
-        }
+        node.x = 55; node.y = 55;
       }
+      // Nudge down until free: siblings sharing parents would otherwise overlap exactly.
+      while (nodes.some((n) => Math.abs(n.x - node.x) < 235 && Math.abs(n.y - node.y) < 165)) node.y += 184;
       return text({ ok: true, node: savePlan({ ...plan, nodes, edges }).nodes.find((n) => n.id === id) });
     }
 
