@@ -56,6 +56,9 @@ async function pollAgent() {
     if(!res.ok) throw new Error();
     const incoming=validatePlan(await res.json());
     bridgeSeen={hash:planFingerprint(incoming),nodes:incoming.nodes.length,edges:incoming.edges.length};
+    // Adopt agreement for free: if both sides already match, record it so
+    // live-apply and the banner work without a primer push/pull.
+    if(!lastSyncedHash&&bridgeSeen.hash===planFingerprint(plan)) lastSyncedHash=bridgeSeen.hash;
     // Truly live: if this browser hasn't diverged since the last sync and
     // nothing is being edited, apply the agent's version outright (undoable).
     // Any local edit, open dialog, drag, or typing keeps the banner instead.

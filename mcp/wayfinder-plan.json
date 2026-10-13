@@ -124,6 +124,17 @@
       "done": false,
       "when": "none",
       "horizon": 3
+    },
+    {
+      "id": "n-mv6eulld-j4zhx",
+      "title": "AI system design prep",
+      "type": "step",
+      "x": 1135,
+      "y": 60,
+      "notes": "ML system design: data + training pipelines, evaluation, deployment and monitoring. Plus LLM-app design: retrieval, prompting, evals, cost/latency tradeoffs.",
+      "done": false,
+      "when": "week",
+      "horizon": 1
     }
   ],
   "edges": [
@@ -170,6 +181,14 @@
     {
       "source": "n-mv5nsgv2-5wsz0",
       "target": "n-mv5nsgv9-3jv1s"
+    },
+    {
+      "source": "n-mv5nsgu0-s07qg",
+      "target": "n-mv6eulld-j4zhx"
+    },
+    {
+      "source": "n-mv6eulld-j4zhx",
+      "target": "n-mv5nsguq-krdlk"
     }
   ]
 }
