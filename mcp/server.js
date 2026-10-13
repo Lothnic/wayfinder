@@ -190,7 +190,8 @@ server.setRequestHandler(CallToolRequestSchema, async (req) => {
         node.x = 55; node.y = 55;
       }
       // Nudge down until free: siblings sharing parents would otherwise overlap exactly.
-      while (nodes.some((n) => Math.abs(n.x - node.x) < 235 && Math.abs(n.y - node.y) < 165)) node.y += 184;
+      // (Skip self: the new node is already in `nodes`.)
+      while (nodes.some((n) => n.id !== node.id && Math.abs(n.x - node.x) < 235 && Math.abs(n.y - node.y) < 165)) node.y += 184;
       return text({ ok: true, node: savePlan({ ...plan, nodes, edges }).nodes.find((n) => n.id === id) });
     }
 

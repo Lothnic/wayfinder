@@ -53,7 +53,7 @@
       "title": "Ship 2 portfolio projects",
       "type": "step",
       "x": 1135,
-      "y": 152,
+      "y": 60,
       "notes": "One ML project, one LLM-app project. Deployed, with READMEs.",
       "done": false,
       "when": "month",
@@ -86,7 +86,7 @@
       "title": "Apply to AI internships",
       "type": "step",
       "x": 1405,
-      "y": 152,
+      "y": 60,
       "notes": "20+ tailored applications, referrals, portfolio link.",
       "done": false,
       "when": "none",
@@ -130,8 +130,19 @@
       "title": "AI system design prep",
       "type": "step",
       "x": 1135,
-      "y": 60,
+      "y": 244,
       "notes": "ML system design: data + training pipelines, evaluation, deployment and monitoring. Plus LLM-app design: retrieval, prompting, evals, cost/latency tradeoffs.",
+      "done": false,
+      "when": "week",
+      "horizon": 1
+    },
+    {
+      "id": "n-mv6f0rhu-zi6n7",
+      "title": "Keep a weekly build log",
+      "type": "step",
+      "x": 1405,
+      "y": 244,
+      "notes": "Short Sunday note: what shipped, what stuck, next week's one thing. Compounds into interview stories.",
       "done": false,
       "when": "week",
       "horizon": 1
@@ -189,6 +200,10 @@
     {
       "source": "n-mv6eulld-j4zhx",
       "target": "n-mv5nsguq-krdlk"
+    },
+    {
+      "source": "n-mv5nsgu6-f0q8l",
+      "target": "n-mv6f0rhu-zi6n7"
     }
   ]
 }
