@@ -1,6 +1,6 @@
 {
   "name": "wayfinder-mcp",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Local MCP server + loopback bridge so AI agents can read and edit Wayfinder life-map DAGs",
   "license": "MIT",
   "repository": {
